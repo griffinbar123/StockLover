@@ -1,5 +1,5 @@
-import  ValueCard  from "../components/ValueCard/ValueCard";
-import { useEffect, useState } from 'react';
+import ValueCard from "../components/ValueCard/ValueCard";
+
 import type { InferGetServerSidePropsType } from 'next';
 
 
@@ -45,8 +45,8 @@ export const getServerSideProps = async (context:any) => {
   data.dp >= 0 ? string_dp = ("+" + data.dp.toString() + "%") : string_dp = ("-" + data.dp.toString() + "%");
   data["string_d"] = string_d;
   data["string_dp"] = string_dp;
-  data["color"] = data.d >= 0 ? "green" : "red";
-
+  data["color"] = data.d >= 0 ? "text-green-500" : "text-red-500";
+  console.log(data);
     return {
       props: { data }, // will be passed to the page component as props
     }
@@ -54,9 +54,7 @@ export const getServerSideProps = async (context:any) => {
 
 
 
-
-
-const Details = ({data} : InferGetServerSidePropsType<typeof getServerSideProps> ) => {
+function Details({data} : InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className="bg-gradient-to-b from-gray-900 via-purple-900 to-violet-600 h-screen">
       <ValueCard data={data} />
