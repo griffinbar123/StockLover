@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import { Input, Center, Text, Box, FormControl } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import { Stack } from '@chakra-ui/react'
@@ -7,9 +6,9 @@ import Link from 'next/link'
 
 
 
-const Home: NextPage = () => {
+const Home = () => {
   const [ticker, setTicker] = useState("");
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e:any) => {
     setTicker(e.target.value);
   };
   

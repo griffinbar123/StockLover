@@ -1,17 +1,17 @@
-import type { NextPage } from 'next'
-import { GetServerSideProps } from 'next'
-import { InferGetServerSidePropsType } from 'next'
-import { Stat, Center, Text,StatNumber, StatHelpText, StatArrow, Flex, Box} from '@chakra-ui/react'
+import  ValueCard  from "../components/ValueCard/ValueCard";
+import { useEffect, useState } from 'react';
+import type { InferGetServerSidePropsType } from 'next';
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+
+export const getServerSideProps = async (context:any) => {
 
   const query = context.query;
-  const ticker: string = query.ticker as string;
+  const ticker = query.ticker;
 
   const key = process.env.NEXT_PUBLIC_POLYGON_API_KEY;
-  const url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${key}`;
-  const response = await fetch(url);
-  const data = await response.json();
+  let url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${key}`;
+  let response = await fetch(url);
+  let data = await response.json();
   
   if (data.status === 'ERROR') {
     return {
@@ -21,47 +21,46 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
-  data["ticker"]=ticker;
+  url = `https://finnhub.io/api/v1/search?q=${ticker}&token=${key}`;
+  response = await fetch(url);
+  let data2 = await response.json();
+
+  if (data2.status === 'ERROR') {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  data["description"] = data2.result[0].description;
+  data["ticker"] = ticker;
+  
+  data.d=(parseFloat(data.d).toFixed(2));
+  data.dp = parseFloat(data.dp).toFixed(2);
+  let string_d = "";
+  let string_dp = "";
+  data.d >= 0 ? string_d = ("+" + data.d.toString()) : string_d=("-" + data.d.toString());
+  data.dp >= 0 ? string_dp = ("+" + data.dp.toString() + "%") : string_dp = ("-" + data.dp.toString() + "%");
+  data["string_d"] = string_d;
+  data["string_dp"] = string_dp;
+  data["color"] = data.d >= 0 ? "green" : "red";
+
     return {
       props: { data }, // will be passed to the page component as props
     }
 }
 
 
-function ValueCard({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  let x = "";
-  data.d >= 0 ? x = "+" + data.d.toString() : x = "-" + data.d.toString(); 
-  let y = "";
-  data.dp >= 0 ? y = "+" + data.dp.toString() : y = "-" + data.dp.toString();
-  let atype = "increase";
-  let color = "green";
-  if (data.d < 0) {
-    atype = "decrease";
-    color = "red";
-  }
-  return (
-      <Stat className="h-24 w-72 bg-gray-500 shadow-lg border border-r-2">
-        <Flex className="h-10 w-100% space-between justify-between">
-          <StatNumber className="p-2 text-4xl">{data.ticker}</StatNumber>
-          <StatNumber className="p-2 text-4xl">{data.pc}</StatNumber>
-      </Flex>
-      <Center className="h-12">
-        <Text className={`text-3xl pr-2 text-${color}-500`}>
-          <StatArrow type='increase' />
-           {y} ({x})
-        </Text>
-      </Center>
-      </Stat>
-  
-  )
-}
 
 
-const Details = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+const Details = ({data} : InferGetServerSidePropsType<typeof getServerSideProps> ) => {
   return (
-    <Box className="h-screen">
+    <div className="bg-gradient-to-b from-gray-900 via-purple-900 to-violet-600 h-screen">
       <ValueCard data={data} />
-    </Box>
+    </div>
   )
 }
 
