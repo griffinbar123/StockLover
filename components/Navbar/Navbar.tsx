@@ -2,13 +2,15 @@ import { Input, Link, FormControl, Stack } from '@chakra-ui/react';
 import { useState } from 'react';
 import Router from "next/router";
 
+
 type AppProps = {
     InitialColor: string;
     SecondColor: string;
+    className: string;
 }
 
 
-export default function Navbar({ InitialColor, SecondColor}: AppProps) {
+export default function Navbar({ InitialColor, SecondColor, className}: AppProps) {
   
   
   const [ticker, setTicker] = useState("");
@@ -25,7 +27,7 @@ export default function Navbar({ InitialColor, SecondColor}: AppProps) {
 
   }
   return (
-    <div>
+    <div className={`${className}`}>
     <FormControl className="col-start-2 col-span-4">
       <Stack className="" align={"center"} spacing={4} direction={"row"}>
         <Input  onKeyPress={(ev) => {
@@ -36,7 +38,7 @@ export default function Navbar({ InitialColor, SecondColor}: AppProps) {
           className="shadow-lg justify-center text-gray-100 "    
           value={ticker}
           onChange={handleInputChange}
-          placeholder="Enter Company Ticker" />      
+          placeholder="Enter Company Ticker: AAPL" />      
         <button
           onClick={handleClick}
           className={`rounded-lg font-bold p-4 shadow-md ${InitialColor} ${SecondColor}`}
@@ -50,8 +52,9 @@ export default function Navbar({ InitialColor, SecondColor}: AppProps) {
     </div>
   )
 }
-Navbar.defaultProps = {
-  InitialColor : "bg-gradient-to-r from-violet-300 to-violet-400",
+Navbar.defaultProps = { 
+  InitialColor : "bg-gradient-to-r from-violet-400 via-indigo-400 to-indigo-300",
 
   SecondColor : "hover:from-purple-700 hover:via-violet-800 hover:to-purple-700",
+  className: "" ,
 }
