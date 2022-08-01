@@ -1,8 +1,4 @@
-
-import {Text } from '@chakra-ui/react'
-
-
-export default function ValueCard({ data } :any) {
+export default function ValueCard({ data }: any) {
     return (
       <div className="flex h-28 w-min-auto bg-transparent shadow-sm overflow-visible text-white  ">
         <div className=" h-48 w-fit mt-8 text-5xl">{data.c}</div>
