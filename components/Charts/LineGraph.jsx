@@ -19,7 +19,7 @@ export default function Candlestick({ticker, data2}){
 
 
   const options =  {
-    colors: ['#00bfff', '#00ff80', '#00ff80', '#00ff80', '#00ff80',
+    colors: ['#ff00ff', '#00ff80', '#00ff80', '#00ff80', '#00ff80',
         '#00ff80', '#00ff80', '#00ff80', '#00ff80', '#00ff80'], 
     chart: {
       renderTo: 'container',
@@ -39,10 +39,14 @@ export default function Candlestick({ticker, data2}){
 
     series: [{
       type: 'candlestick',
-      name: ticker+' Stock Price',
+      name: ticker.ticker+' Stock Price',
       data: data,
       dataGrouping: {
         units: [
+          [
+            'day',
+            [1, 2, 3,4, 5, 6, 7]
+          ]
           [
             'week', // unit name
             [1] // allowed multiples
