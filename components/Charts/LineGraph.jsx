@@ -1,131 +1,46 @@
-import { Line } from 'react-chartjs-2';
-// import { Chart as ChartJS } from 'chart.js/auto'
-// import { Chart }            from 'react-chartjs-2'
-import {useState} from 'react';
-import {useEffect, useRef } from 'react';
-import Router from "next/router";
-import { createChart, CrosshairMode } from 'lightweight-charts';
+import Highcharts from "highcharts/highstock";
+import HighchartsReact from 'highcharts-react-official';
+import data from "/pages/api/data.json";
 
 
 
-export default function LineChart({ticker}) {
+export default function Candlestick({ticker}){
+  const options =  {
+    rangeSelector: {
+      selected: 1
+    },
 
-  // const [data, setDate] = useState({
-  //   labels: ['Jun', 'Jul', 'Aug'],
-  //   datasets: [
-  //     {
-  //       id: 1,
-  //       label: '',
-  //       data: [5, 6, 7],
-  //     },
-  //   ],
-  // });
-  // useEffect(() => {
-  //   fetch(`/api/${ticker}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setDate(data);
-  //     }
-  //     )
-  //     .catch(err => console.log(err));
-  // });
+    title: {
+      text: ticker+' Stock Price'
+    },
 
-  //   return (
-  //     <div>
-  //       <Line
-  //       datasetIdKey='id'
-  //       data={data}
-  //       />
-  //     </div>
-  //   );
-  const chartContainerRef = useRef();
-  const chart = useRef();
-  const resizeObserver = useRef();
+    series: [{
+      type: 'candlestick',
+      name: ticker+' Stock Price',
+      data: data,
+      dataGrouping: {
+        units: [
+          [
+            'week', // unit name
+            [1] // allowed multiples
+          ], [
+            'month',
+            [1, 2, 3, 4 , 6]
+          ]
+        ]
+      }
+    }]
+  };
 
-  useEffect(() => {
-    chart.current = createChart(chartContainerRef.current, {
-      width: chartContainerRef.current.clientWidth,
-      height: chartContainerRef.current.clientHeight,
-      layout: {
-        backgroundColor: '#253248',
-        textColor: 'rgba(255, 255, 255, 0.9)',
-      },
-      grid: {
-        vertLines: {
-          color: '#334158',
-        },
-        horzLines: {
-          color: '#334158',
-        },
-      },
-      crosshair: {
-        mode: CrosshairMode.Normal,
-      },
-      priceScale: {
-        borderColor: '#485c7b',
-      },
-      timeScale: {
-        borderColor: '#485c7b',
-      },
-    });
 
-    console.log(chart.current);
+  return(
+    <div>
+    <HighchartsReact
+      highcharts={Highcharts}
+      constructorType={"stockChart"}
+      options={options}
+    />
+  </div>
+  )
 
-    const candleSeries = chart.current.addCandlestickSeries({
-      upColor: '#4bffb5',
-      downColor: '#ff4976',
-      borderDownColor: '#ff4976',
-      borderUpColor: '#4bffb5',
-      wickDownColor: '#838ca1',
-      wickUpColor: '#838ca1',
-    });
-
-    candleSeries.setData(priceData);
-
-    // const areaSeries = chart.current.addAreaSeries({
-    //   topColor: 'rgba(38,198,218, 0.56)',
-    //   bottomColor: 'rgba(38,198,218, 0.04)',
-    //   lineColor: 'rgba(38,198,218, 1)',
-    //   lineWidth: 2
-    // });
-
-    // areaSeries.setData(areaData);
-
-    const volumeSeries = chart.current.addHistogramSeries({
-      color: '#182233',
-      lineWidth: 2,
-      priceFormat: {
-        type: 'volume',
-      },
-      overlay: true,
-      scaleMargins: {
-        top: 0.8,
-        bottom: 0,
-      },
-    });
-
-    volumeSeries.setData(volumeData);
-  }, []);
-
-  // Resize chart on container resizes.
-  useEffect(() => {
-    resizeObserver.current = new ResizeObserver(entries => {
-      const { width, height } = entries[0].contentRect;
-      chart.current.applyOptions({ width, height });
-      setTimeout(() => {
-        chart.current.timeScale().fitContent();
-      }, 0);
-    });
-
-    resizeObserver.current.observe(chartContainerRef.current);
-
-    return () => resizeObserver.current.disconnect();
-  }, []);
-
-  return (
-    <div className="App">
-      <div ref={chartContainerRef} className="chart-container" />
-    </div>
-  );
 }
-
