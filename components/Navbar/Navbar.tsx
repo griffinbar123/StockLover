@@ -34,7 +34,8 @@ export default function Navbar({ InitialColor, SecondColor, className,}: AppProp
     <FormControl className="col-start-2 col-span-4">
       <Stack className="" align={"center"} spacing={4} direction={"row"}>
         <Input  onKeyPress={(ev) => {
-          if (ev.key === "Enter") {                    ev.preventDefault();
+          if (ev.key === "Enter") {                    
+            ev.preventDefault();
             handleClick();
           }
         }}
