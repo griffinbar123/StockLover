@@ -7,32 +7,25 @@ type AppProps = {
     InitialColor: string;
     SecondColor: string;
     className: string;
-    data: Array<any>;
 }
 
 
-export default function Navbar({ InitialColor, SecondColor, className, data}: AppProps) {
+export default function Navbar({ InitialColor, SecondColor, className,}: AppProps) {
   
   
   const [ticker, setTicker] = useState("");
   const handleInputChange = (e:any) => {
   setTicker(e.target.value.toUpperCase());
   };
-  const handleClick = () => {
-    // console.log("boi");
-    let ind = "";
-    let jnd = "";
-      for (let i:number = 0; i < data.length; i++) {
-        // console.log(i);
-        if (ind !== "" ) {
-          jnd = data[i];
-          Router.push("/" + ind+"?name="+jnd);
-          break;
-        }
-          if (data[i] === ticker) {
-              ind = data[i];
-          }
-      }
+  const handleClick = async() => {
+    const response= await fetch('/api/'+ticker);
+    const data= await response.json();
+    console.log(data);
+    if (!data.ok || data.error) {
+      console.log("not ok");
+      return;
+    }
+    Router.push("/" + ticker+"?name="+data.data);
     
 
   }
@@ -66,5 +59,5 @@ Navbar.defaultProps = {
   InitialColor : "bg-gradient-to-r from-violet-400 via-indigo-400 to-indigo-300",
   SecondColor : "hover:from-purple-700 hover:via-violet-800 hover:to-purple-700",
   className: "" ,
-  data:[],
+
 }

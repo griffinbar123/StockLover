@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       backgroundOpacity: {
         '1': '.1',
-        '20': '0.2',
+        '20': '0.02',
         '95': '0.95',
        }
   },

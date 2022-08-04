@@ -1,17 +1,40 @@
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from 'highcharts-react-official';
-import data from "/pages/api/data.json";
+import {useState, useEffect} from 'react';
+// import data from "/pages/api/data.json";
 
 
+export default function Candlestick({ticker, data2}){
+  
+  if(data2.s !== "ok"){
+    console.log("error");
+  }
+  let data = [];
+  // console.log("no error")
+  for (let i = 0; i < data2.t.length; i++) {
+    let d3=[];
+    d3.push(data2.t[i]*1000, data2.o[i], data2.h[i], data2.l[i], data2.c[i], data2.v[i]);
+    data.push(d3);
+}
 
-export default function Candlestick({ticker}){
+
   const options =  {
+    colors: ['#00bfff', '#00ff80', '#00ff80', '#00ff80', '#00ff80',
+        '#00ff80', '#00ff80', '#00ff80', '#00ff80', '#00ff80'], 
+    chart: {
+      renderTo: 'container',
+      backgroundColor: 'rgba(0,0,0,0)'
+  },
+
     rangeSelector: {
       selected: 1
     },
 
     title: {
-      text: ticker+' Stock Price'
+      text: ticker+' Stock Price',
+      style : {
+        color: '#ffffff'
+      }
     },
 
     series: [{
@@ -31,8 +54,6 @@ export default function Candlestick({ticker}){
       }
     }]
   };
-
-
   return(
     <div>
     <HighchartsReact
