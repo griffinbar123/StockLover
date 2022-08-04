@@ -41,7 +41,7 @@ export default function Navbar({ InitialColor, SecondColor, className,}: AppProp
           className="shadow-lg justify-center text-gray-100 "    
           value={ticker}
           onChange={handleInputChange}
-          placeholder="Enter Company Ticker: AAPL" />      
+          placeholder="Enter Ticker: AAPL" />      
         <button
           onClick={handleClick}
           className={`rounded-lg font-bold p-4 shadow-md ${InitialColor} ${SecondColor}`}

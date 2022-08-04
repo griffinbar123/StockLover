@@ -56,14 +56,14 @@ export const getServerSideProps = async (context: any) => {
 function Details({data3, data4, data6} : InferGetServerSidePropsType<typeof getServerSideProps>) {
   let ticker = data3.ticker;
   return (
-    <div className="bg-gradient-to-b bg-scroll h-screen from-gray-900 via-purple-900 to-violet-600 ">
-      <div className="grid grid-flow-row auto-rows-min px-2 grid-cols-12 gap-4 [&>*]:shadow">
+    <div className="bg-gradient-to-b bg-scroll from-gray-900 via-purple-900 to-violet-600 ">
+      <div className="grid grid-flow-row auto-rows-min px-2 grid-cols-12 gap-4  ">
         <div className=" flex h-fit justify-center col-start-1 col-span-12 pt-2 px-">
             <HomeL className = "mr-4" />
             <Navbar className = {" grow "} 
             InitialColor = {" bg-gradient-to-r from-violet-300 to-violet-500"} />
         </div>
-        <div className = "col-start-1 col-span-3 row-span-4 flex flex-col pt-5" >
+        <div className = " col-span-12 row-span-4 flex flex-col pt-5" >
           <Center className="">
             <ValueCard data3={data3} />
           </Center>
@@ -71,7 +71,7 @@ function Details({data3, data4, data6} : InferGetServerSidePropsType<typeof getS
             <InfoCard data={data6} />
           </div>
         </div>
-        <div className = " bg-transparent col-start-4 col-span-9 row-span-4">
+        <div className = " flex justify-center bg-transparent col-start-1 col-span-12 row-span-4)">
           <Candlestick ticker = {ticker} data2  = {data4} />
         </div>
       </div>
