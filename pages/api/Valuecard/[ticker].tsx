@@ -1,5 +1,5 @@
 import { NextApiResponse , NextApiRequest } from "next";
-import { useRouter } from "next/router";
+
 
 export default async function Handler(req:NextApiRequest, res:NextApiResponse) {
     const key = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;

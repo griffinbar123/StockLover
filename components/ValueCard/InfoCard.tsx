@@ -1,4 +1,24 @@
-export default function InfoCard({ data }: any) {
+import { dehydrate, QueryClient, useQuery } from "react-query";
+
+async function getData( key:any)   {
+  // console.log(name);
+  let response = await fetch('/api/Infocard/'+key.queryKey[1]);
+  let data3 = await response.json();
+  return data3.data;
+}
+
+
+
+
+
+
+export default function InfoCard({ ticker }: any) {
+  const { data, isLoading, isError } = useQuery(["ticker", ticker], getData);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (isError) {
+    return <div>Loading,,,</div>;
+  } else {
     return (
       <div className="grid md:mt-16  xl:mt-20 2xl:mt-32 [&>*]:p-2 [&>*]:py-3  grid-cols-2 grid-rows-5 gap-2 [&>*]:flex [&>*]:justify-center
          md:[&>*]:text-3xl xl:[&>*]:text-4xl 2xl:[&>*]:text-5xl">
@@ -18,3 +38,4 @@ export default function InfoCard({ data }: any) {
       </div>
     )
   }
+}

@@ -15,7 +15,7 @@ export default function ValueCard({ ticker, name }: any) {
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (isError) {
-    return <div>Error</div>;
+    return <div>Loading,,,</div>;
   } else {
   
     return (

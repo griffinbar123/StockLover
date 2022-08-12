@@ -22,38 +22,16 @@ export const getServerSideProps = async (context: any) => {
     let data4 = await response.json();
 
   let name = query.name;
-  // console.log(name, query)
-  // console.log(data2);
-  url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${key}`;
-  response = await fetch(url);
-  let data = await response.json();
-
-  data.d=(parseFloat(data.d).toFixed(2));
-  data.dp = parseFloat(data.dp).toFixed(2);
-  data.c = parseFloat(data.c).toFixed(2);
-  let string_d = "";
-  let string_dp = "";
-  let color = "";
-  let c :string = data.c.toString();
-  data.d >= 0 ? string_d = ("+" + data.d.toString()) : string_d=(data.d.toString());
-  data.dp >= 0 ? string_dp = ("+" + data.dp.toString() + "%") : string_dp = (data.dp.toString() + "%");
-  color = data.d >= 0 ? "text-green-500" : "text-red-500";
-  // Object.assign(data3, {"string_dp": string_dp, "string_d": string_d, "color": color, ticker: ticker, "description": name, "c": c});
-
-  url = `https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${key}`;
-  response = await fetch(url);
-  let data6 = await response.json();
-  Object.assign(data6, {"open":data.o, "pc":data.pc, "high":data.h, "low":data.l});
 
 
     return {
-      props: { ticker , name, data4, data6}, // will be passed to the page component as props
+      props: { ticker , name, data4}, // will be passed to the page component as props
     }
 }
 
 
 
-function Details({ticker, name, data4, data6} : InferGetServerSidePropsType<typeof getServerSideProps>) {
+function Details({ticker, name, data4} : InferGetServerSidePropsType<typeof getServerSideProps>) {
 
   return (
     <div className="bg-gradient-to-b bg-scroll from-gray-900 via-purple-900 to-violet-600 ">
@@ -68,7 +46,7 @@ function Details({ticker, name, data4, data6} : InferGetServerSidePropsType<type
             <ValueCard ticker = {ticker} name = {name} />
           </Center>
           <div className = "">
-            <InfoCard data={data6} />
+            <InfoCard ticker={ticker} />
           </div>
         </div>
         <div className = " flex justify-center bg-transparent col-start-1 col-span-12 row-span-4)">
