@@ -8,7 +8,7 @@ import {Center} from '@chakra-ui/react';
 
 
 export const getServerSideProps = async (context: any) => {
-  let data3 :any = {};
+  // let data3 :any = {};
   const query = context.query;
   let ticker = query.ticker;
   const key = process.env.NEXT_PUBLIC_FINNHUB_API_KEY;
@@ -38,7 +38,7 @@ export const getServerSideProps = async (context: any) => {
   data.d >= 0 ? string_d = ("+" + data.d.toString()) : string_d=(data.d.toString());
   data.dp >= 0 ? string_dp = ("+" + data.dp.toString() + "%") : string_dp = (data.dp.toString() + "%");
   color = data.d >= 0 ? "text-green-500" : "text-red-500";
-  Object.assign(data3, {"string_dp": string_dp, "string_d": string_d, "color": color, ticker: ticker, "description": name, "c": c});
+  // Object.assign(data3, {"string_dp": string_dp, "string_d": string_d, "color": color, ticker: ticker, "description": name, "c": c});
 
   url = `https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${key}`;
   response = await fetch(url);
@@ -47,14 +47,14 @@ export const getServerSideProps = async (context: any) => {
 
 
     return {
-      props: { data3 , data4, data6}, // will be passed to the page component as props
+      props: { ticker , name, data4, data6}, // will be passed to the page component as props
     }
 }
 
 
 
-function Details({data3, data4, data6} : InferGetServerSidePropsType<typeof getServerSideProps>) {
-  let ticker = data3.ticker;
+function Details({ticker, name, data4, data6} : InferGetServerSidePropsType<typeof getServerSideProps>) {
+
   return (
     <div className="bg-gradient-to-b bg-scroll from-gray-900 via-purple-900 to-violet-600 ">
       <div className="grid grid-flow-row auto-rows-min px-2 grid-cols-12 gap-4  ">
@@ -65,7 +65,7 @@ function Details({data3, data4, data6} : InferGetServerSidePropsType<typeof getS
         </div>
         <div className = " col-span-12 row-span-4 flex flex-col pt-5" >
           <Center className="">
-            <ValueCard data3={data3} />
+            <ValueCard ticker = {ticker} name = {name} />
           </Center>
           <div className = "">
             <InfoCard data={data6} />

@@ -25,6 +25,7 @@
     "react-apexcharts": "^1.4.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "18.2.0",
+    "react-query": "^3.39.2",
     "tailwind-children": "^0.5.0",
     "tailwindcss-children": "^2.1.0",
     "vercel": "^27.3.7"
