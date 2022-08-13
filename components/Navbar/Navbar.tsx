@@ -20,7 +20,6 @@ export default function Navbar({ InitialColor, SecondColor, className,}: AppProp
   const handleClick = async() => {
     const response= await fetch('/api/'+ticker);
     const data= await response.json();
-    console.log(data);
     if (!data.ok || data.error) {
       console.log("not ok");
       return;

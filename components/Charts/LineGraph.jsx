@@ -1,22 +1,51 @@
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from 'highcharts-react-official';
 import {useState, useEffect} from 'react';
-// import data from "/pages/api/data.json";
+import { dehydrate, QueryClient, useQuery } from "react-query";
+
+async function getDat( key)   {
+  //  console.log("hi");
+  let response = await fetch('/api/Chart/AAPL');
+  let data3 = await response.json();
+  console.log(JSON.stringify(data3.data));
+  return data3.data;
+}
 
 
-export default function Candlestick({ticker, data2}){
+function useWindowSize() {
+  // Initialize state with undefined width/height so server and client renders match
+  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+  const [windowSize, setWindowSize] = useState( 
+    {
+    width: undefined,
+    height: undefined,
+  });
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []
+  ); // Empty array ensures that effect is only run on mount
+  return windowSize;
+}
+
+export default function Candlestick({ticker}){
+  // console.log(ticker);
   let size = useWindowSize();
   
-  if(data2.s !== "ok"){
-    console.log("error");
-  }
-  let data = [];
-  // console.log("no error")
-  for (let i = 0; i < data2.t.length; i++) {
-    let d3=[];
-    d3.push(data2.t[i]*1000, data2.o[i], data2.h[i], data2.l[i], data2.c[i], data2.v[i]);
-    data.push(d3);
-}
+  
+  const { data, isLoading, isError } = useQuery(["ticker2", ticker], getDat);
 
 
   const options =  {
@@ -49,7 +78,7 @@ export default function Candlestick({ticker, data2}){
           [
             'day',
             [1, 2, 3,4, 5, 6, 7]
-          ]
+          ],
           [
             'week', // unit name
             [1] // allowed multiples
@@ -71,30 +100,4 @@ export default function Candlestick({ticker, data2}){
   </div>
   )
 
-}
-
-function useWindowSize() {
-  // Initialize state with undefined width/height so server and client renders match
-  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-  });
-  useEffect(() => {
-    // Handler to call on window resize
-    function handleResize() {
-      // Set window width/height to state
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-    // Call handler right away so state gets updated with initial window size
-    handleResize();
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []); // Empty array ensures that effect is only run on mount
-  return windowSize;
 }

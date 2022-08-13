@@ -1,6 +1,6 @@
 import { dehydrate, QueryClient, useQuery } from "react-query";
 
-async function getData( key:any)   {
+async function getData2( key:any)   {
   // console.log(name);
   let response = await fetch('/api/Infocard/'+key.queryKey[1]);
   let data3 = await response.json();
@@ -13,7 +13,7 @@ async function getData( key:any)   {
 
 
 export default function InfoCard({ ticker }: any) {
-  const { data, isLoading, isError } = useQuery(["ticker", ticker], getData);
+  const { data, isLoading, isError } = useQuery(["ticker3", ticker], getData2);
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (isError) {
